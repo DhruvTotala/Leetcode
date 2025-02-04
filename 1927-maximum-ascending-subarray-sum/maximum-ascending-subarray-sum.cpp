@@ -7,10 +7,10 @@ public:
     for(int i = 1; i < n; i++){
         if(nums[i] > nums[i - 1]){
             sum += nums[i];
-            ans = max(sum, ans);
+            ans = max(ans, sum);
         }
         else sum = nums[i];
-    }    
+    }
     return ans;
     }
 };
