@@ -12,7 +12,6 @@ public:
         }
         else mp[nums[i]] = i;
     }
-    sort(ans.begin(), ans.end());
     return ans;
     } 
 };
