@@ -1,8 +1,8 @@
 class Solution {
 public:
     vector<int> queryResults(int limit, vector<vector<int>>& queries) {
-    vector <int> ans;
     int m = queries.size();
+    vector <int> ans(m);
     unordered_map <int, int> bmp;
     unordered_map <int, int> cmp;
     for(int i = 0; i < m; i++){
@@ -15,7 +15,7 @@ public:
          }
         bmp[ball] = color;
         cmp[color] ++;
-        ans.push_back(cmp.size());
+        ans[i] = cmp.size();
     }
     return ans;
     }
