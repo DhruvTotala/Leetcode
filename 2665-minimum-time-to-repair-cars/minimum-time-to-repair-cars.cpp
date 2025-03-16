@@ -1,9 +1,3 @@
-#include <vector>
-#include <algorithm>
-#include <cmath>
-
-using namespace std;
-
 class Solution {
 public:
     bool ispossible(vector<int>& ranks, long long mid, int cars) {
