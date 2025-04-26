@@ -10,7 +10,7 @@ public:
             sum += nums[i];
             int modul = (sum % k);
             if(modul < 0) modul += k;
-            if(mp.find(modul) != mp.end()){
+            if(mp.count(modul)){
                 result += mp[modul];
             }
             mp[modul] ++;
