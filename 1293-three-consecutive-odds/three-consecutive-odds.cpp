@@ -1,9 +1,14 @@
 class Solution {
 public:
     bool threeConsecutiveOdds(vector<int>& arr) {
-        int n = arr.size();
-        for(int i = 0; i < n - 2; i++) {
-            if(arr[i] % 2 != 0 && arr[i + 1] % 2 != 0 && arr[i + 2] % 2 != 0)  return true;
+        int count = 0;
+        for (int num : arr) {
+            if (num & 1) {  // Bitwise check for odd
+                count++;
+                if (count == 3) return true;
+            } else {
+                count = 0;
+            }
         }
         return false;
     }
