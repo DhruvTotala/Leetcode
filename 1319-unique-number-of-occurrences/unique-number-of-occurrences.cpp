@@ -1,17 +1,17 @@
 class Solution {
 public:
     bool uniqueOccurrences(vector<int>& arr) {
-    unordered_map <int,int> mp;
-    for(int i = 0; i < arr.size(); i++){
-        mp[arr[i]] += 1;
-    }
-    unordered_set <int> st;
-    for(auto &it : mp){
-        int freq = it.second;
-        if(st.find(freq) != st.end())
-        return false;
-        st.insert(freq);
-    }
-    return true;
+        int offset = 1000;
+        vector <int> freq(2001, 0);
+        vector <int> visited_freq(1001, 0);
+
+        for(int num : arr) freq[num + offset]++;
+        for(int i = 0; i <= 2000; i++) {
+            if(freq[i] > 0) {
+                if(visited_freq[freq[i]] == 1) return false;
+                visited_freq[freq[i]] = 1;
+            }
+        }
+        return true;
     }
 };
