@@ -2,23 +2,14 @@ class Solution {
 public:
     int findLHS(vector<int>& nums) {
         int n = nums.size();
-        int maxLen = 0;
-
-        for (int i = 0; i < n; ++i) {
-            int count = 0;
-            bool hasNeighbor = false;
-
-            for (int j = 0; j < n; ++j) {
-                if (nums[j] == nums[i] || nums[j] == nums[i] + 1) {
-                    count++;
-                    if (nums[j] != nums[i]) hasNeighbor = true;
-                }
+        unordered_map <int, int> mp;
+        for(auto &it : nums) mp[it]++;
+        int ans = 0;
+        for(auto& [num, count] : mp) {
+            if(mp.count(num + 1)) {
+                ans = max(ans, count + mp[num + 1]);
             }
-
-            if (hasNeighbor)
-                maxLen = max(maxLen, count);
         }
-
-        return maxLen;
+        return ans;
     }
 };
