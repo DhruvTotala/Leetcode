@@ -1,19 +1,27 @@
 class Solution {
 public:
+
+    void fillc(string& words, int mp[26]) {
+         for(char& ch : words) mp[ch - 'a']++;
+    }
     vector<string> commonChars(vector<string>& words) {
-    vector <int> minfreq(26, INT_MAX);
-    for(string word : words){
-        vector<int> freq(26, 0);
-        for(auto ch : word) freq[ch - 'a']++;
-    for(int i = 0; i < 26; i++) minfreq[i] = min(minfreq[i], freq[i]);
-    }
-    vector <string> ans;
-    for(int i = 0; i < 26; i++){
-        while(minfreq[i] > 0){
-            ans.push_back(string(1, i + 'a'));
-            minfreq[i]--;
+        vector <string> ans;
+        int n = words.size();
+        int mp[26] = {0};
+
+        fillc(words[0], mp);
+        for(int i = 1; i < n; i++) {
+            int temp[26] = {0};
+            fillc(words[i], temp);
+
+            for(int j = 0; j < 26; j++) mp[j] = min(mp[j], temp[j]);
         }
-    }
-    return ans;
+        for(int i = 0; i < 26; i++) {
+            int c = mp[i];
+            while(c--) {
+                ans.push_back(string(1, i + 'a'));
+            }
+        }
+        return ans; 
     }
 };
