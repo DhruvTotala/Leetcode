@@ -1,11 +1,17 @@
 class Solution {
 public:
     int maxSum(vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+        int max_neg = INT_MIN;
         unordered_set <int> st;
-        for(int it : nums) {
-            if(it > 0) st.emplace(it);
+        for(int i = 0; i < n; i++) {
+            if(nums[i] <= 0) max_neg = max(max_neg, nums[i]);
+            else if(!st.count(nums[i])) {
+                sum += nums[i];
+                st.insert(nums[i]);
+            }
         }
-        if(st.empty()) return *max_element(nums.begin(), nums.end());
-        return accumulate(st.begin(), st.end(), 0);
+        return sum == 0 ? max_neg : sum;
     }
 };
