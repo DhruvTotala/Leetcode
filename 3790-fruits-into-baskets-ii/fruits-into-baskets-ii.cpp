@@ -1,19 +1,17 @@
 class Solution {
 public:
     int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
-        int count = 0;
-        int n = fruits.size();
-        for(int i = 0; i < n; i++) {
-            int ans = 1;
-            for(int j = 0; j < n; j++) {
-                if(fruits[i] <= baskets[j]) {
-                   baskets[j] = 0;
-                   ans = 0;
-                   break;
+        const int n=fruits.size();
+        int ans=n;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if (fruits[i]<=baskets[j]){
+                    ans--;
+                    baskets[j]=0;
+                    break;
                 }
             }
-            count += ans;
         }
-        return count;
+        return ans;
     }
 };
