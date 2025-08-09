@@ -1,11 +1,11 @@
 class Solution {
 public:
     bool isPowerOfTwo(int n) {
-        if (n <= 0) return false; // powers of two are positive
-
-        for (int i = 0; (1LL << i) <= n; i++) { // use shifting instead of pow()
-            if ((1LL << i) == n) return true;  // exact match
+        if(n <= 0) return false;
+        long long val = 1;
+        while(val < n) {
+            val *= 2;
         }
-        return false;
+        return val == n;
     }
 };
