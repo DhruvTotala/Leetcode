@@ -1,23 +1,23 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        int n = intervals.size();
-        int m = intervals[0].size();
-        vector<vector<int>> ans;
-        sort(intervals.begin(), intervals.end());
-        for(int i = 0; i < n; i++) {
-            int start = intervals[i][0];
-            int end = intervals[i][1];
+        if (intervals.empty()) return {};
 
-            if (!ans.empty() && end <= ans.back()[1]) {
-                 continue;
+        // Sorting is O(n log n)
+        sort(intervals.begin(), intervals.end());
+
+        vector<vector<int>> ans;
+        ans.push_back(intervals[0]);
+
+        // Merge step is O(n)
+        for (int i = 1; i < intervals.size(); i++) {
+            if (intervals[i][0] <= ans.back()[1]) {
+                // Overlap: extend the last interval
+                ans.back()[1] = max(ans.back()[1], intervals[i][1]);
+            } else {
+                // No overlap: add new interval
+                ans.push_back(intervals[i]);
             }
-            for(int j = i + 1; j < n; j++) {
-                if(intervals[j][0] <= end) {
-                    end = max(end, intervals[j][1]);
-                } else break;
-            }
-            ans.push_back({start, end});
         }
         return ans;
     }
