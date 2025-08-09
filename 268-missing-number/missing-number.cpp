@@ -6,10 +6,9 @@ public:
         for(int i = 1; i < n; i++) {
             nums_xor ^= nums[i];
         }
-        int size_xor = 0;
         for(int i = 1; i <= n; i++) {
-            size_xor ^= i;
+            nums_xor ^= i;
         }
-        return size_xor ^ nums_xor;
+        return nums_xor;
     }
 };
