@@ -1,16 +1,17 @@
 class Solution {
 public:
     string largestGoodInteger(string num) {
-        string ans = "";
-        for (int i = 0; i + 2 < num.size(); i++) {
-            // Check if three consecutive characters are same
-            if (num[i] == num[i + 1] && num[i] == num[i + 2]) {
-                string triple = num.substr(i, 3);
-                if (ans == "" || triple > ans) {
-                    ans = triple; // Lexicographic works because all triples have same digit
-                }
+        int n = num.size();
+
+        char max_char = ' ';
+        for(int i = 2; i < n; i++) {
+            if((num[i] == num[i - 1]) && (num[i] == num[i - 2])) {
+                max_char = max(max_char, num[i]);
             }
         }
-        return ans;
+        if(max_char == ' ') {
+            return "";
+        }
+        return string(3, max_char);
     }
 };
