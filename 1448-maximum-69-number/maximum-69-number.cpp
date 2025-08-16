@@ -8,7 +8,6 @@ public:
             break;
             }
         }
-        num = stoi(s);
-        return num;
+        return stoi(s);
     }
 };
