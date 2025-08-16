@@ -8,7 +8,7 @@ public:
             break;
             }
         }
-        int ans = stoi(s);
-        return ans;
+        num = stoi(s);
+        return num;
     }
 };
