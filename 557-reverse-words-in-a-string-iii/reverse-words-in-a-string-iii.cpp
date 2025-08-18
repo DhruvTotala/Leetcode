@@ -1,17 +1,14 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        for(int i = 0; i < s.size(); i++) {
-           if(s[i] != ' ') {
-              int j = i;
-              while(j < s.size() && s[j] != ' ') {
-                j++;
-              }
-
-              reverse(s.begin() + i, s.begin() + j);
-              i = j;
-           }
+        int n = s.size();
+        stringstream ss(s);
+        string word = "";
+        string result = "";
+        while(ss >> word) {
+            reverse(word.begin(), word.end());
+            result += word + " ";
         }
-        return s;
+        return result.substr(0, result.size() - 1);
     }
 };
