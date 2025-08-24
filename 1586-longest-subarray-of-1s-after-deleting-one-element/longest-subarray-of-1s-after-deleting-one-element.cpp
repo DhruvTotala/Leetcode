@@ -5,10 +5,10 @@ public:
         int len = 0;
         int i = 0;
         for(int j = 0; j < nums.size(); j++) {
-            zero_count += (nums[j] == 0);
+            if(nums[j] == 0) zero_count++;
 
             while(zero_count > 1) {
-                zero_count -= (nums[i] == 0);
+                if(nums[i] == 0) zero_count--;
                 i++;
             }
             len = max(len, j - i);
