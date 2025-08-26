@@ -1,32 +1,32 @@
 class Solution {
 public:
-    bool canStealKHouses(const vector<int>& nums, int k, int capability) {
+
+    bool iscapable(vector <int>& nums, int mid, int k) {
         int count = 0;
-        int i = 0;
-        while (i < nums.size()) {
-            if (nums[i] <= capability) {
-                count++;
-                i += 2; 
-            } else {
-                i++;
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] <= mid) {
+              count++;
+              i++;
             }
+            if(count >= k) return true;
         }
-        return count >= k;
+        return false;
     }
     
     int minCapability(vector<int>& nums, int k) {
-        int left = *min_element(nums.begin(), nums.end());
-        int right = *max_element(nums.begin(), nums.end());
-        
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (canStealKHouses(nums, k, mid)) {
-                right = mid;
+        int n = nums.size();
+        int ans;
+        int low = 1;
+        int high = *max_element(nums.begin(), nums.end());
+        while(low <= high) {
+            int mid = (low + high) / 2;
+            if(iscapable(nums, mid, k)) {
+               ans = mid;
+               high = mid - 1;
             } else {
-                left = mid + 1;
+                low = mid + 1;
             }
         }
-        
-        return left;
+        return ans;
     }
 };
