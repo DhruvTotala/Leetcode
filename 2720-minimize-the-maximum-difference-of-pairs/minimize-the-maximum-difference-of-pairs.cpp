@@ -21,7 +21,7 @@ public:
         sort(nums.begin(), nums.end());
         int low = 0;
         int high = nums[n - 1] - nums[0];
-        int ans = high;
+        int ans = 0;
         while(low <= high) {
             int mid = low + (high - low) / 2;
             if(ispossible(nums, mid, p)) {
