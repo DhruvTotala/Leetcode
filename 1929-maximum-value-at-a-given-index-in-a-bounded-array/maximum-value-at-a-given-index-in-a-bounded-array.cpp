@@ -1,32 +1,34 @@
 class Solution {
 public:
-
-    long long getfromformula(long long count, long long x) {
-        return (count * x) - ((count * (count + 1)) / 2);
+    // sum of first cnt numbers decreasing from (x-1, x-2, ...)
+    long long calc(long long cnt, long long x) {
+        if (cnt >= x) {
+            // full decreasing sequence until 1, then rest are 1's
+            return (x - 1) * x / 2 + (cnt - (x - 1));
+        } else {
+            // just cnt terms of decreasing sequence
+            return (x - 1 + x - cnt) * cnt / 2;
+        }
     }
 
     int maxValue(int n, int index, int maxSum) {
-        long long low = 1;
-        long long  high = maxSum;
-        int count = 0;
-        while(low <= high) {
-            long long mid = low + (high - low) / 2;
-            long long left_part = min((long long)index, mid - 1);
-            long long left_sum = getfromformula(left_part, mid);
-            left_sum += max((long long)0, index - (mid - 1));
-            
-            long long right_part = min((long long) n - index - 1, mid - 1);
-            long long right_sum = getfromformula(right_part, mid);
-            right_sum += max((long long)0, n - index - 1 - mid + 1);
+        long long low = 1, high = maxSum, ans = 1;
 
-            long long total_sum = right_sum + mid + left_sum;
-            if(total_sum <= maxSum) {
-                count = max((long long)count, mid);
+        while (low <= high) {
+            long long mid = low + (high - low) / 2;
+
+            long long left_sum = calc(index, mid);
+            long long right_sum = calc(n - index - 1, mid);
+            long long total = left_sum + right_sum + mid;
+
+            if (total <= maxSum) {
+                ans = mid;        // feasible, try higher
                 low = mid + 1;
             } else {
-                high = mid - 1;
+                high = mid - 1;   // too large
             }
         }
-        return count;
+
+        return ans;
     }
 };
