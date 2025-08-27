@@ -1,26 +1,22 @@
 class Solution {
 public:
 
-    bool isvalid(vector <int>& piles, int mid, int h) {
-        int hrs = 0;
+    bool ispossible(vector <int>& piles, int mid, int h) {
+        int total_time = 0;
         for(int i = 0; i < piles.size(); i++) {
-            hrs += (piles[i] + mid - 1) / mid;
-            if(hrs > h) return false;
+            total_time += (piles[i] + mid - 1) / mid;
+            if(total_time > h) return false;
         }
-        if(hrs <= h) {
-            return true;
-        }
-        return false;
+        return true;
     }
-
     int minEatingSpeed(vector<int>& piles, int h) {
         int n = piles.size();
         int low = 1;
         int high = *max_element(piles.begin(), piles.end());
-        int ans = -1;
+        int ans;
         while(low <= high) {
             int mid = (low + high) / 2;
-            if(isvalid(piles, mid, h)) {
+            if(ispossible(piles, mid, h)) {
                 ans = mid;
                 high = mid - 1;
             } else {
