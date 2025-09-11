@@ -31,7 +31,7 @@ public:
             i++;
             curr = curr -> next;
         }
-        for(int j = 0; j < n; j++) {
+        for(int j = 0; j < (n / 2); j++) {
             if(arr[j] != arr[n - j - 1]) return false;
         }
         return true;
