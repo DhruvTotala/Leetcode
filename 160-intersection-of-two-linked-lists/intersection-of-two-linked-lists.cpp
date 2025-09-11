@@ -34,7 +34,7 @@ public:
             p1 = p1 -> next;
             diff--;
         }
-        while(p1 != NULL && p2 != NULL) {
+        while(p1 != NULL) {
             if(p1 == p2) return p1;
             p1 = p1 -> next;
             p2 = p2 -> next;
