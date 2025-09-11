@@ -1,33 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 class Solution {
 public:
     ListNode* oddEvenList(ListNode* head) {
-
-        ListNode* curr = head;
-        ListNode* headA = new ListNode();  // dummy for odd
-        ListNode* headB = new ListNode();  // dummy for even
-        ListNode* p1 = headA;
-        ListNode* p2 = headB;
-        
-        int count = 1;
-        while (curr != NULL) {
-            ListNode* temp = curr;
-            curr = curr -> next;
-            temp -> next = NULL; // disconnect node from original chain
-            
-            if (count % 2 == 1) {  // odd
-                p1 -> next = temp;
-                p1 = p1 -> next;
-            } else {               // even
-                p2 -> next = temp;
-                p2 = p2 -> next;
-            }
-            count++;
+        if(head == NULL || head -> next == NULL) return head;
+        ListNode* temp = head;
+        vector <int> arr;
+        while(temp != NULL && temp -> next != NULL) {
+            arr.push_back(temp -> val);
+            temp = temp -> next -> next;
         }
-        
-        // connect odd list with even list
-        p1 -> next = headB -> next;
-        p2 -> next = NULL; // terminate even list
-        
-        return headA -> next; // skip dummy
+        if(temp) arr.push_back(temp -> val);
+
+        temp = head -> next;
+        while(temp != NULL && temp -> next != NULL) {
+            arr.push_back(temp -> val);
+            temp = temp-> next -> next;
+        }
+        if(temp) arr.push_back(temp -> val);
+
+        int i = 0;
+        temp = head;
+        while(temp != NULL) {
+            temp -> val = arr[i];
+            i++;
+            temp = temp -> next;
+        }
+        return head;
     }
 };
