@@ -11,28 +11,30 @@
 class Solution {
 public:
 
-    int ll_len(ListNode* head) {
-        ListNode* curr = head;
-        int count = 0;
-        while(curr != NULL) {
-            count++;
-            curr = curr -> next;
-        }
-        return count;
+    ListNode* reverse(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return head;
+        ListNode* newTail = head -> next;
+        ListNode* newHead = reverse(head -> next);
+        newTail -> next = head;
+        head -> next = NULL;
+        return newHead;
     }
-
     bool isPalindrome(ListNode* head) {
-        int n = ll_len(head);
-        vector <int> arr(n);
-        ListNode* curr = head;
-        int i = 0;
-        while(curr != NULL) {
-            arr[i] = curr -> val;
-            i++;
-            curr = curr -> next;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast != NULL && fast -> next != NULL) {
+            slow = slow -> next;
+            fast = fast -> next -> next;
         }
-        for(int j = 0; j < (n / 2); j++) {
-            if(arr[j] != arr[n - j - 1]) return false;
+
+        ListNode* rev = reverse(slow);
+        ListNode* p1 = head;
+        ListNode* p2 = rev;
+
+        while(p1 != NULL && p2 != NULL) {
+             if(p1 -> val != p2 -> val) return false;
+             p1 = p1 -> next;
+             p2 = p2 -> next;
         }
         return true;
     }
