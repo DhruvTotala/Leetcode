@@ -1,14 +1,12 @@
 class Solution {
 public:
 
-    bool ispossible(vector <int>& nums, int mid, int p) {
+    bool isvalid(vector <int>& arr, int mid, int p) {
+        int n = arr.size();
         int count = 0;
-        int i = 0;
-        while(i < nums.size() - 1) {
-            if(abs(nums[i] - nums[i + 1]) <= mid) {
+        for(int i = 0; i < n - 1; i++) {
+            if(abs(arr[i] - arr[i + 1]) <= mid) {
                 count++;
-                i += 2;
-            } else {
                 i++;
             }
             if(count >= p) return true;
@@ -24,13 +22,13 @@ public:
         int ans = 0;
         while(low <= high) {
             int mid = low + (high - low) / 2;
-            if(ispossible(nums, mid, p)) {
-               ans = mid;
-               high = mid - 1;
+            if(isvalid(nums, mid, p)) {
+                ans = mid;
+                high = mid - 1;
             } else {
                 low = mid + 1;
             }
         }
-        return ans;
+    return ans;    
     }
 };
