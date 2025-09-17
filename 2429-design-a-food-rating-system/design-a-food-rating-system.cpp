@@ -1,28 +1,39 @@
 class FoodRatings {
 public:
-    unordered_map<string, pair<string, int>> foodInfo; // food -> {cuisine, rating}
-    unordered_map<string, set<pair<int, string>>> cuisineRatings; // cuisine -> sorted set { -rating, food }
 
+    unordered_map <string, int> food_ratings;
+    unordered_map <string, set<pair<int, string>>> cuisines_ratings_food;
+    unordered_map <string, string> food_cuisines;
     FoodRatings(vector<string>& foods, vector<string>& cuisines, vector<int>& ratings) {
         int n = foods.size();
-        for (int i = 0; i < n; i++) {
-            foodInfo[foods[i]] = {cuisines[i], ratings[i]};
-            cuisineRatings[cuisines[i]].insert({-ratings[i], foods[i]});
+        for(int i = 0; i < n; i++) {
+            string food = foods[i];
+            string cuisine = cuisines[i];
+            int rating = ratings[i];
+
+            cuisines_ratings_food[cuisine].insert({-rating, food});
+            food_cuisines[food] = cuisine;
+            food_ratings[food] = rating; 
         }
+        
     }
     
     void changeRating(string food, int newRating) {
-        auto [cuisine, oldRating] = foodInfo[food];
-        // Remove old entry
-        cuisineRatings[cuisine].erase({-oldRating, food});
-        // Insert new entry
-        cuisineRatings[cuisine].insert({-newRating, food});
-        // Update food info
-        foodInfo[food] = {cuisine, newRating};
+        string cuisine = food_cuisines[food];
+        int oldRating = food_ratings[food];
+        food_ratings[food] = newRating;
+        cuisines_ratings_food[cuisine].erase({-oldRating, food});
+        cuisines_ratings_food[cuisine].insert({-newRating, food});
     }
     
     string highestRated(string cuisine) {
-        // First element = highest rating (lowest -rating)
-        return cuisineRatings[cuisine].begin()->second;
+        return cuisines_ratings_food[cuisine].begin() -> second;
     }
 };
+
+/**
+ * Your FoodRatings object will be instantiated and called as such:
+ * FoodRatings* obj = new FoodRatings(foods, cuisines, ratings);
+ * obj->changeRating(food,newRating);
+ * string param_2 = obj->highestRated(cuisine);
+ */
