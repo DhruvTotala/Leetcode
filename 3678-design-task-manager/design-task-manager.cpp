@@ -1,52 +1,50 @@
 class TaskManager {
-    struct Task {
-        int taskId;
-        int priority;
-        bool operator<(const Task &other) const {
-            if (priority != other.priority)
-                return priority > other.priority; // higher first
-            return taskId > other.taskId;        // larger id first
-        }
-    };
-
-    map<Task, int> taskQueue;
-    unordered_map<int, int> taskPriorityMap;
-
 public:
+    typedef pair<int, int> P;
+    priority_queue<P> maxHeap; // priority, taskId
+    unordered_map <int, int> taskPriorityMap; // task -> priority
+    unordered_map <int, int> taskOwnerMap;  // taskID -> userID
+
     TaskManager(vector<vector<int>>& tasks) {
-        for (auto &t : tasks) {
-            int userId = t[0], taskId = t[1], priority = t[2];
-            taskQueue[{taskId, priority}] = userId;
-            taskPriorityMap[taskId] = priority;
-        }
+        for(auto& task : tasks) {
+            add(task[0], task[1], task[2]);
+        }    
     }
-
+    
     void add(int userId, int taskId, int priority) {
-        taskQueue[{taskId, priority}] = userId;
+        maxHeap.push({priority, taskId});
         taskPriorityMap[taskId] = priority;
+        taskOwnerMap[taskId] = userId;
     }
-
+    
     void edit(int taskId, int newPriority) {
-        int oldPriority = taskPriorityMap[taskId];
-        int userId = taskQueue[{taskId, oldPriority}];
-        taskQueue.erase({taskId, oldPriority});
-        taskQueue[{taskId, newPriority}] = userId;
+        maxHeap.push({newPriority, taskId});
         taskPriorityMap[taskId] = newPriority;
     }
-
+    
     void rmv(int taskId) {
-        if (!taskPriorityMap.count(taskId)) return;
-        int priority = taskPriorityMap[taskId];
-        taskQueue.erase({taskId, priority});
-        taskPriorityMap.erase(taskId);
+        taskPriorityMap[taskId] = -1;
     }
-
+    
     int execTop() {
-        if (taskQueue.empty()) return -1;
-        auto it = taskQueue.begin();
-        int userId = it->second;
-        taskPriorityMap.erase(it->first.taskId);
-        taskQueue.erase(it);
-        return userId;
+        while(!maxHeap.empty()) {
+            auto [prio, taskId] = maxHeap.top();
+            maxHeap.pop();
+
+            if(prio == taskPriorityMap[taskId]) {
+                taskPriorityMap[taskId] = -1;
+                return taskOwnerMap[taskId];
+            }
+        }
+        return -1;
     }
 };
+
+/**
+ * Your TaskManager object will be instantiated and called as such:
+ * TaskManager* obj = new TaskManager(tasks);
+ * obj->add(userId,taskId,priority);
+ * obj->edit(taskId,newPriority);
+ * obj->rmv(taskId);
+ * int param_4 = obj->execTop();
+ */
