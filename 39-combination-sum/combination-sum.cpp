@@ -1,7 +1,7 @@
 class Solution {
 public:
 
-    void findcombinations(int idx, vector <int>& candidates, vector<vector<int>>& ans, vector <int>& ds, int target) {
+    void findcombinations(int idx, vector <int>& candidates, vector<vector<int>>& ans, vector <int> ds, int target) {
         if(idx == candidates.size()) {
             if(target == 0) ans.push_back(ds);
             return;
