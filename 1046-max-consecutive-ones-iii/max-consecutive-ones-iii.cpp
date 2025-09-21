@@ -8,7 +8,7 @@ public:
         int max_len = 0;
         while(r < n) {
             if(nums[r] == 0) zeroes_count++;
-            if(zeroes_count > k) {
+            while (zeroes_count > k) {
                 if(nums[l] == 0) zeroes_count--;
                 l++;
             } 
