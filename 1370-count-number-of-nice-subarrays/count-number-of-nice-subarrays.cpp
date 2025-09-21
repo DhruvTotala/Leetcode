@@ -1,20 +1,20 @@
 class Solution {
 public:
-    int atMost(vector<int>& nums, int k) {
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int sum = 0;
+        int count = 0;
+        unordered_map <int, int> mp;
+        mp[sum] = 1;
         int n = nums.size();
-        int l = 0, count = 0, sum = 0;
-        for (int r = 0; r < n; r++) {
-            sum += (nums[r] % 2);
-            while (sum > k) {
-                sum -= (nums[l] % 2);
-                l++;
+        for(int i = 0; i < n; i++) {
+            sum += nums[i] % 2;
+
+            if(mp.find(sum - k) != mp.end()) {
+                count += mp[sum - k];
             }
-            count += (r - l + 1); // all subarrays ending at r
+            mp[sum]++;
         }
         return count;
-    }
-
-    int numberOfSubarrays(vector<int>& nums, int k) {
-        return atMost(nums, k) - atMost(nums, k - 1);
+        
     }
 };
