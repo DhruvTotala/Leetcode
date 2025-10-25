@@ -11,28 +11,27 @@ public:
             for (int j = i + 1; j < n - 2; j++) {
                 if (j > i + 1 && nums[j] == nums[j - 1]) continue; 
 
-                int left = j + 1;
-                int right = n - 1;
+                int k = j + 1;
+                int l = n - 1;
 
-                while (left < right) {
-                    long long sum = (long long)nums[i] + nums[j] + nums[left] + nums[right];
+                while (k < l) {
+                    long long sum = (long long)nums[i] + nums[j] + nums[k] + nums[l];
 
-                    if (sum < target) left++;
-                    else if (sum > target) right--;
+                    if (sum < target) k++;
+                    else if (sum > target) l--;
                     else {
-                        ans.push_back({nums[i], nums[j], nums[left], nums[right]});
+                        ans.push_back({nums[i], nums[j], nums[k], nums[l]});
 
-                        left++;
-                        right--;
+                        k++;
+                        l--;
 
                     
-                        while (left < right && nums[left] == nums[left - 1]) left++;
-                        while (left < right && nums[right] == nums[right + 1]) right--;
+                        while (k < l && nums[k] == nums[k - 1]) k++;
+                        while (k < l && nums[l] == nums[l + 1]) l--;
                     }
                 }
             }
         }
-
         return ans;
     }
 };
