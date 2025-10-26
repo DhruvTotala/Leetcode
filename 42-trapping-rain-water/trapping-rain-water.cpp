@@ -3,8 +3,6 @@ public:
     int trap(vector<int>& height) {
         int n = height.size();
         int ans = 0;
-        int i = 1;
-        int j = n - 2;
         vector <int> prefix(n + 1, 0);
         vector <int> suffix(n + 1, 0);
         prefix[0] = height[0];
@@ -16,7 +14,7 @@ public:
             suffix[i] = max(height[i], suffix[i + 1]);
         }
         for(int i = 1; i < n - 1; i++) {
-             ans += min(prefix[i], suffix[i]) - height[i];
+             ans += max(0, min(prefix[i], suffix[i]) - height[i]);
         }
         return ans;
     }
