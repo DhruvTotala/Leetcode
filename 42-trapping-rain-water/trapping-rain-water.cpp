@@ -15,7 +15,7 @@ public:
         for(int i = n - 2; i >= 0; i--) {
             suffix[i] = max(height[i], suffix[i + 1]);
         }
-        for(int i = 0; i < n; i++) {
+        for(int i = 1; i < n - 1; i++) {
              ans += min(prefix[i], suffix[i]) - height[i];
         }
         return ans;
