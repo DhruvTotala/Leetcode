@@ -23,11 +23,11 @@ public:
             for (int i = 1; i < n; i++)
                 diff[i][j] += diff[i - 1][j];
 
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                ans[i][j] = diff[i][j];
-            }
-        }
-        return ans;
+        // for(int i = 0; i < n; i++) {
+        //     for(int j = 0; j < n; j++) {
+        //         ans[i][j] = diff[i][j];
+        //     }
+        // }
+        return diff;
     }
 };
