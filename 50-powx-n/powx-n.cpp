@@ -1,15 +1,24 @@
 class Solution {
 public:
     double myPow(double x, int n) {
-      if(n == 0) return 1;
-
-      double ans = 1.0;
-      long long p = abs((long long) n);
-      while(p > 0){
-        if(p % 2 == 1) ans *= x;
-        x *= x;
-        p/= 2;
-      }
-      return (n < 0) ? (1.0 / ans) : ans;
+        
+        if(n < 0) {
+            x = 1 / x;
+        } 
+        
+        long num = labs(n);
+        
+        double pow = 1;
+        
+        while(num){ // equivalent to while(num != 0)
+            if(num & 1) { // equivalent to if((num & 1) != 0)
+                pow *= x;
+            }
+            
+            x *= x;
+            num >>= 1;
+        }
+        
+        return pow;
     }
 };
