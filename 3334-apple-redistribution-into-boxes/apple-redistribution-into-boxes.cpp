@@ -7,7 +7,7 @@ public:
         int count = 0;
         while(sum > 0) {
             sum -= capacity[count];
-            count += 1;
+            count++;
         }
         return count;
     }
