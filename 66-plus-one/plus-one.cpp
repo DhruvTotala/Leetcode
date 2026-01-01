@@ -1,17 +1,15 @@
 class Solution {
 public:
     vector<int> plusOne(vector<int>& digits) {
-        int idx = digits.size() - 1; // Start from the last digit
-        while (idx >= 0) {
-            if (digits[idx] == 9) {
-                digits[idx] = 0; // Set current digit to 0 if it's 9
-            } else {
-                digits[idx] += 1; // Otherwise, just add 1
-                return digits; // Return the result immediately
+        int n = digits.size();
+        for(int i = n - 1; i >= 0; i--) {
+            if(digits[i] != 9) {
+                digits[i] += 1;
+                return digits;
             }
-            idx--; // Move to the next digit
+            digits[i] = 0;
         }
-        digits.insert(digits.begin(), 1); // If all digits were 9, add a leading 1
+        digits.insert(digits.begin(), 1);
         return digits;
     }
 };
