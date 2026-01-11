@@ -1,24 +1,18 @@
 class Solution {
 public:
+    double ans(double x, long y) {
+        if(y == 0) return 1;
+        double h = ans(x, y / 2);
+
+        if(y % 2 == 0) return h * h;
+        else return h * h * x;
+    }
     double myPow(double x, int n) {
-        
-        if(n < 0) {
+        long y = n;
+        if(y < 0) {
             x = 1 / x;
-        } 
-        
-        long num = labs(n);
-        
-        double pow = 1;
-        
-        while(num){ // equivalent to while(num != 0)
-            if(num & 1) { // equivalent to if((num & 1) != 0)
-                pow *= x;
-            }
-            
-            x *= x;
-            num >>= 1;
+            y = -y;
         }
-        
-        return pow;
+        return ans(x, y);
     }
 };
