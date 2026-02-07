@@ -2,11 +2,22 @@ class Solution {
 public:
     int minimumDeletions(string s) {
         int n = s.size();
-        int count = 0;
-        int b_count = 0;
+        vector <int> left_b(n, 0);
+        vector <int> right_a(n, 0);
+
+        int countb = 0;
         for(int i = 0; i < n; i++) {
-            if(s[i] == 'b') b_count++;
-            else count = min(count + 1, b_count);
+            left_b[i] = countb;
+            if(s[i] == 'b') countb++;
+        }
+        int counta = 0;
+        for(int i = n - 1; i >= 0; i--) {
+            right_a[i] = counta;
+            if(s[i] == 'a') counta++;
+        }
+        int count = INT_MAX;
+        for(int i = 0; i < n; i++) {
+            count = min(count, left_b[i] + right_a[i]);
         }
         return count;
     }
