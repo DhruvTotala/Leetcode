@@ -1,48 +1,74 @@
 class Solution {
 public:
-    int longestBalanced(string s) {
-
-        int n = s.size();
-        int ans = 0, a = 0, b = 0, c = 0 , run = 1;
-        map<pair<int, int>, int> mp;
-        map<int,int> mpab , mpac , mpbc;
-
-        mp[{0,0}] = -1;
-        mpab[0] = -1;
-        mpac[0] = -1;
-        mpbc[0] = -1;
-
-        for (int i = 0; i < n; i++) {
-            if (s[i] == 'a') {
-                mpbc.clear();
-                a++;
-            }
-            else if (s[i] == 'b'){
-                mpac.clear();
-                b++;
-            }
-            else{
-                mpab.clear();
-                c++;
-            }
-
-            if(mpab.count(a-b)) ans = max(ans, i - mpab[a-b]);
-            else mpab[a-b] = i;
-
-            if(mpac.count(a-c)) ans = max(ans, i - mpac[a-c]);
-            else mpac[a-c] = i;
-
-            if(mpbc.count(b-c)) ans = max(ans, i - mpbc[b-c]);
-            else mpbc[b-c] = i;
-
-            if (mp.count({a - b, a - c})) ans = max(ans, i - mp[{a - b, a - c}]);
-            else mp[{a - b, a - c}] = i;
-
-            if(i != 0 && s[i] == s[i-1]) run++;
-            else run = 1;
-
-            ans = max(ans , run);
+    int mono(const string& s){
+        if(s.empty()) return 0;
+        int cnt = 1;
+        int ans = 1;
+        for(int i = 1; i < (int)s.size(); i ++){
+            if(s[i] == s[i - 1]) cnt++;
+            else cnt = 1;
+            ans = max(ans, cnt);
         }
         return ans;
+    }
+
+    int duo(const string& s, char c1, char c2){
+        map<int, int> pos;
+        pos[0] = -1;
+        int ans = 0;
+        int delta = 0;
+        for(int i = 0; i < (int)s.size(); i ++){
+            if(s[i] != c1 && s[i] != c2){
+                pos.clear();
+                pos[0] = i;
+                delta = 0;
+                continue;
+            }
+            if(s[i] == c1){
+                delta++;
+            }
+            else{
+                delta--;
+            }
+            if(pos.find(delta) != pos.end()){
+                ans = max(ans, i - pos[delta]);
+            }
+            else{
+                pos[delta] = i;
+            }
+        }
+        return ans;
+    }
+
+    int trio(const string& s){
+        vector<int> cnt(3, 0);
+
+        map<vector<int>, int> pos;
+        pos[{0, 0}] = -1;
+
+        int ans = 0;
+
+        for(int i = 0; i < (int)s.size(); i++){
+            cnt[s[i] - 'a']++;
+
+            vector<int> key = {cnt[1] - cnt[0], cnt[2] - cnt[0]};
+
+            if(pos.find(key) != pos.end()){
+                ans = max(ans, i - pos[key]);
+            }
+            else{
+                pos[key] = i;
+            }
+        }
+        return ans;
+    }
+    int longestBalanced(string s) {
+        return max({
+            mono(s),
+            duo(s, 'a', 'b'),
+            duo(s, 'a', 'c'),
+            duo(s, 'b', 'c'),
+            trio(s)
+        });
     }
 };
