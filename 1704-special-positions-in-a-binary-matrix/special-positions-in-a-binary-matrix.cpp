@@ -4,24 +4,22 @@ public:
         int count = 0;
         int m = mat.size();
         int n = mat[0].size();
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                if(mat[i][j] == 0) continue;
-            bool isokay = true;
-            for(int r = 0; r < m; r++) {
-                if(r != i && mat[r][j] == 1) {
-                    isokay = false;
-                    break;
+        vector <int> rowarray(m, 0);
+        vector <int> colarray(n, 0);
+        for(int row = 0; row < m; row++) {
+            for(int col = 0; col < n; col++) {
+                if(mat[row][col] == 1) {
+                    rowarray[row]++;
+                    colarray[col]++;
                 }
             }
-            for(int c = 0; c < n; c++) {
-                if(c != j && mat[i][c] == 1) {
-                    isokay = false;
-                    break;
-                }
-            }
-            if(isokay) count++;
         }
+        for(int row = 0; row < m; row++) {
+            for(int col = 0; col < n; col++) {
+                if(mat[row][col] == 1 && rowarray[row] == 1 && colarray[col] == 1) {
+                    count++;
+                }
+            }
         }
         return count;
     }
