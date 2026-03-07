@@ -1,31 +1,39 @@
 class Solution {
 public:
-    int n;
-    void dfs(unordered_map <int, vector<int>>& mp, int node, vector <bool>& visited) {
+    void bfs(unordered_map<int, vector<int>>& mp, int node, vector <bool>& visited) {
+        queue <int> q;
+        q.push(node);
         visited[node] = true;
-        for(auto &it : mp[node]) {
-            if(!visited[it]) dfs(mp, it, visited);
-        }
-    }
-    int findCircleNum(vector<vector<int>>& isConnected) {
-        unordered_map <int, vector <int>> mp;
-        n = isConnected.size();
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                if(isConnected[i][j] == 1) {
-                    mp[i].push_back(j);
-                    mp[j].push_back(i);
+        while(!q.empty()) {
+            int f = q.front();
+            q.pop();
+            for(auto &it : mp[f]) {
+                if(!visited[it]) {
+                    visited[it] = true;
+                    q.push(it);
                 }
             }
         }
-        int count = 0;
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        unordered_map<int, vector<int>> mp;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(isConnected[i][j] == 1){
+                mp[i].push_back(j);
+                mp[j].push_back(i);
+                }
+            }
+        }
         vector <bool> visited(n, false);
+        int count = 0;
         for(int i = 0; i < n; i++) {
             if(!visited[i]) {
-                dfs(mp, i, visited);
+                bfs(mp, i, visited);
                 count++;
             }
         }
-        return count;    
+        return count;
     }
 };
