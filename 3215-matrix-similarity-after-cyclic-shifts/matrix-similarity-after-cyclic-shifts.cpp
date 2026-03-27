@@ -5,15 +5,22 @@ public:
         int n = mat[0].size();
 
         k %= n;
+
         for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                if(i % 2 == 0) {
-                    if(mat[i][j] != mat[i][(j + k) % n]) return false;
-                } else {
-                    if(mat[i][j] != mat[i][(j - k + n) % n]) return false;
-                }
+            vector<int> temp = mat[i];
+
+            if(i % 2 == 0) {
+                // left rotate using begin()
+                rotate(temp.begin(), temp.begin() + k, temp.end());
+            } 
+            else {
+                // right rotate using rbegin()
+                rotate(temp.rbegin(), temp.rbegin() + k, temp.rend());
             }
+
+            if(temp != mat[i]) return false;
         }
+
         return true;
     }
 };
