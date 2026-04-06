@@ -1,47 +1,30 @@
 class Solution {
 public:
     int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
-        // Store obstacles for quick lookup
-        set<pair<int,int>> blocked;
-        for (auto &o : obstacles) {
-            blocked.insert({o[0], o[1]});
+        unordered_set <string> st;
+        for(vector <int>& v : obstacles) {
+            string key = to_string(v[0]) + "-" + to_string(v[1]);
+            st.insert(key);
         }
-
-        // Directions: North, East, South, West
-        vector<pair<int,int>> directions = {
-            {0, 1}, {1, 0}, {0, -1}, {-1, 0}
-        };
-
-        int x = 0, y = 0;
-        int dir = 0; // start facing North
-        int maxDist = 0;
-
-        for (int cmd : commands) {
-            if (cmd == -1) {
-                // turn right
-                dir = (dir + 1) % 4;
-            } 
-            else if (cmd == -2) {
-                // turn left
-                dir = (dir + 3) % 4;
-            } 
+        int x = 0;
+        int y = 0;
+        int max_dist = 0;
+        pair <int, int> dir = {0, 1};
+        for(int i = 0; i < commands.size(); i++) {
+            if(commands[i] == -2) dir = {-dir.second, dir.first};
+            else if(commands[i] == -1) dir = {dir.second, -dir.first};
             else {
-                // move forward step by step
-                while (cmd--) {
-                    int nx = x + directions[dir].first;
-                    int ny = y + directions[dir].second;
-
-                    // stop if obstacle is ahead
-                    if (blocked.count({nx, ny})) break;
-
+                for(int step = 0; step < commands[i]; step++) {
+                    int nx = x + dir.first;
+                    int ny = y + dir.second;
+                    string nkey = to_string(nx) + "-" + to_string(ny);
+                    if(st.find(nkey) != st.end()) break;
                     x = nx;
                     y = ny;
-
-                    maxDist = max(maxDist, x * x + y * y);
+                    max_dist = max(max_dist, x * x + y * y);
                 }
-            }
+            } 
         }
-
-        return maxDist;
+        return max_dist;
     }
 };
