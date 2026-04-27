@@ -1,37 +1,47 @@
 class Solution {
 public:
-    int m, n;
-    unordered_map <int, vector<vector<int>>> directions = {
-        {1, {{0, -1}, {0, 1}}},
-        {2, {{1, 0}, {-1, 0}}},
-        {3, {{1, 0}, {0, -1}}},
-        {4, {{1, 0}, {0, 1}}},
-        {5, {{0, -1}, {-1, 0}}},
-        {6, {{-1, 0}, {0, 1}}},
+    unordered_map<int, vector<vector<int>>> directions = {
+        {1, {{0,-1},{0,1}}},
+        {2, {{1,0},{-1,0}}},
+        {3, {{1,0},{0,-1}}},
+        {4, {{1,0},{0,1}}},
+        {5, {{0,-1},{-1,0}}},
+        {6, {{-1,0},{0,1}}}
     };
 
-    bool dfs(vector<vector<bool>>& visited, int r, int c, vector<vector<int>>& grid) {
-        if(r == m - 1 && c == n - 1) return true;
-        visited[r][c] = true;
-        for(auto &dir : directions[grid[r][c]]) {
-            int new_r = r + dir[0];
-            int new_c = c + dir[1];
-            if(new_r < 0 || new_c < 0 || new_r >= m || new_c >= n || visited[new_r][new_c]) {
-                continue;
-            }
-            for(auto &backdir : directions[grid[new_r][new_c]]) {
-                if(new_r + backdir[0] == r && new_c + backdir[1] == c) {
-                    if(dfs(visited, new_r, new_c, grid)) return true;
+    bool hasValidPath(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        vector<vector<bool>> visited(m, vector<bool>(n,false));
+        queue<pair<int,int>> q;
+
+        q.push({0,0});
+        visited[0][0] = true;
+
+        while(!q.empty()) {
+            auto [r,c] = q.front();
+            q.pop();
+
+            if(r == m-1 && c == n-1) return true;
+
+            for(auto &dir : directions[grid[r][c]]) {
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+
+                if(nr < 0 || nc < 0 || nr >= m || nc >= n || visited[nr][nc])
+                    continue;
+
+                for(auto &backdir : directions[grid[nr][nc]]) {
+                    if(nr + backdir[0] == r && nc + backdir[1] == c) {
+                        visited[nr][nc] = true;
+                        q.push({nr,nc});
+                        break;
+                    }
                 }
             }
         }
-        return false;
-    }
-    bool hasValidPath(vector<vector<int>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
 
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
-        return dfs(visited, 0, 0, grid);
+        return false;
     }
 };
