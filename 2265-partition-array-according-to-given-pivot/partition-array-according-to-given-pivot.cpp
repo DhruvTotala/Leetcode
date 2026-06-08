@@ -2,21 +2,22 @@ class Solution {
 public:
     vector<int> pivotArray(vector<int>& nums, int pivot) {
         int n = nums.size();
-        vector<int> result(n);
-        int left = 0, mid = 0;
+        int mid = 0;
+        int left = 0;
+        vector <int> result(n);
 
-        // First pass: count smaller elements
-        for (int num : nums)
-            if (num < pivot) result[left++] = num;
-
-        // Second pass: place pivot elements
+        for(int num : nums) {
+            if(num < pivot) result[left++] = num;
+        }
         mid = left;
-        for (int num : nums)
-            if (num == pivot) result[mid++] = num;
 
-        // Third pass: place greater elements
-        for (int num : nums)
-            if (num > pivot) result[mid++] = num;
+        for(int num : nums) {
+            if(num == pivot) result[mid++] = num;
+        }
+
+        for(int num : nums) {
+            if(num > pivot) result[mid++] = num;
+        }
 
         return result;
     }
