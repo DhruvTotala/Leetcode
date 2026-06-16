@@ -1,20 +1,20 @@
 class Solution {
 public:
     string processStr(string s) {
-        string result = "";
-        for (auto it : s) {
-            if (it == '*') {
-                if (result.size()) {
-                    result.pop_back();
+        string ans = "";
+        for(auto it : s) {
+            if(it == '*') {
+                if(ans.size()) {
+                    ans.pop_back();
                 }
-            } else if (it == '#') {
-                result += result;
-            } else if (it == '%') {
-                result = string(result.rbegin(), result.rend());
+            } else if(it == '#') {
+                ans += ans;
+            } else if(it == '%') {
+                ans = string(ans.rbegin(), ans.rend());
             } else {
-                result += it;
-            }
+                ans += it;
         }
-        return result;
+    }
+    return ans;
     }
 };
