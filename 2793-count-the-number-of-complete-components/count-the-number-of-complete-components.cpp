@@ -1,56 +1,45 @@
 class Solution {
 public:
+    void dfs(int node, vector<vector<int>>& adj, vector<int>& vis,
+             int &nodes, int &degreeSum) {
+
+        vis[node] = 1;
+        nodes++;
+        degreeSum += adj[node].size();
+
+        for (int nei : adj[node]) {
+            if (!vis[nei]) {
+                dfs(nei, adj, vis, nodes, degreeSum);
+            }
+        }
+    }
+
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
-        vector<int> parent(n), rank(n, 0);
-        iota(parent.begin(), parent.end(), 0);
-        
-        function<int(int)> find = [&](int x) {
-            if (parent[x] != x) {
-                parent[x] = find(parent[x]);
-            }
-            return parent[x];
-        };
-        
-        auto unionSets = [&](int x, int y) {
-            int rootX = find(x);
-            int rootY = find(y);
-            if (rootX == rootY) return;
-            if (rank[rootX] < rank[rootY]) {
-                parent[rootX] = rootY;
-            } else if (rank[rootX] > rank[rootY]) {
-                parent[rootY] = rootX;
-            } else {
-                parent[rootY] = rootX;
-                rank[rootX]++;
-            }
-        };
-        
-        for (auto& edge : edges) {
-            unionSets(edge[0], edge[1]);
+
+        vector<vector<int>> adj(n);
+
+        for (auto &e : edges) {
+            adj[e[0]].push_back(e[1]);
+            adj[e[1]].push_back(e[0]);
         }
-        
-        unordered_map<int, unordered_set<int>> componentVertices;
-        unordered_map<int, int> componentEdges;
-        
-        for (int i = 0; i < n; ++i) {
-            int root = find(i);
-            componentVertices[root].insert(i);
-        }
-        
-        for (auto& edge : edges) {
-            int root = find(edge[0]);
-            componentEdges[root]++;
-        }
-        
-        int completeCount = 0;
-        for (auto& [root, vertices] : componentVertices) {
-            int numVertices = vertices.size();
-            int expectedEdges = numVertices * (numVertices - 1) / 2;
-            if (componentEdges[root] == expectedEdges) {
-                completeCount++;
+
+        vector<int> vis(n, 0);
+        int ans = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (!vis[i]) {
+                int nodes = 0;
+                int degreeSum = 0;
+
+                dfs(i, adj, vis, nodes, degreeSum);
+
+                int edgeCount = degreeSum / 2;
+
+                if (edgeCount == nodes * (nodes - 1) / 2)
+                    ans++;
             }
         }
-        
-        return completeCount;
+
+        return ans;
     }
 };
