@@ -1,19 +1,18 @@
 class Solution {
 public:
     bool isValid(string s) {
-        stack<char> st;
-        for (char it : s) {
-            if (it == '(' || it == '[' || it == '{') {
-                st.push(it);
-            } else {
-                if (st.empty()) return false;  // no opening bracket
+        stack <char> st;
+        for(char ch : s) {
+            if(ch == '(' || ch == '{' || ch == '[') st.push(ch);
+            else {
+                if(st.empty()) return false;
                 char top = st.top();
                 st.pop();
-                if (it == ')' && top != '(') return false;
-                if (it == ']' && top != '[') return false;
-                if (it == '}' && top != '{') return false;
+                if (ch == ')' && top != '(') return false;
+                if (ch == '}' && top != '{') return false;
+                if (ch == ']' && top != '[') return false;
             }
         }
-        return st.empty(); // all opened brackets must be closed
+        return st.empty();
     }
 };
