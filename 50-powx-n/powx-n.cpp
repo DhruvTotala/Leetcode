@@ -1,18 +1,20 @@
 class Solution {
 public:
-    double ans(double x, long y) {
-        if(y == 0) return 1;
-        double h = ans(x, y / 2);
+    double solve(double x, long long n) {
+        if (n == 0) return 1.0;
 
-        if(y % 2 == 0) return h * h;
-        else return h * h * x;
+        if (n % 2 == 0)
+            return solve(x * x, n / 2);
+
+        return x * solve(x * x, n / 2);
     }
+
     double myPow(double x, int n) {
-        long y = n;
-        if(y < 0) {
-            x = 1 / x;
-            y = -y;
-        }
-        return ans(x, y);
+        long long power = n;
+
+        if (power < 0)
+            return 1.0 / solve(x, -power);
+
+        return solve(x, power);
     }
 };
